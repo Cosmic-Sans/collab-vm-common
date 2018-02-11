@@ -249,7 +249,8 @@ struct Transfer {
 	srcHeight @4 :Int32;
 	function @5 :UInt8;
 	dstLayer @6 :Layer;
-	dst @7 :Point;
+	dstX @7 :Int32;
+	dstY @8 :Int32;
 }
 
 struct Transform {
@@ -356,7 +357,8 @@ struct Key {
 }
 
 struct Mouse {
-	point @0 :Point;
-	mask @1 :Int32;
+	x @0 :Int32;
+	y @1 :Int32;
+	mask @2 :Int32;
 }
 
