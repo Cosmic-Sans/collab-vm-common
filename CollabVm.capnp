@@ -3,14 +3,16 @@ using import "Guacamole.capnp".GuacServerInstruction;
 
 struct CollabVmServerMessage {
 	struct VmInfo {
-		name @0 :Text;
-		host @1 :Text;
-		address @2 :Text;
-		operatingSystem @3 :Text;
-		uploads @4 :Bool;
-		input @5 :Bool;
-		ram @6 :UInt8;
-		disk @7 :UInt8;
+		id @0 :UInt32;
+		name @1 :Text;
+		host @2 :Text;
+		address @3 :Text;
+		operatingSystem @4 :Text;
+		uploads @5 :Bool;
+		input @6 :Bool;
+		ram @7 :UInt8;
+		diskSpace @8 :UInt8;
+		safeForWork @9 :Bool;
 	}
 
 	enum VmStatus {
@@ -22,8 +24,7 @@ struct CollabVmServerMessage {
 	struct AdminVmInfo {
 		id @0 :UInt32;
 		name @1 :Text;
-		enabled @2 :Bool;
-		status @3 :VmStatus;
+		status @2 :VmStatus;
 	}
 
 	struct ChannelChatMessage {
@@ -136,6 +137,7 @@ struct CollabVmServerMessage {
 		readVmConfigResponse @17 :List(VmSetting);
 		createVmResponse @18 :UInt32;
 		guacInstr @19 :GuacServerInstruction;
+		changePasswordResponse @20 :Bool;
 	}
 }
 
@@ -169,14 +171,19 @@ struct VmSetting {
 		tcp @1;
 	}
 
+	struct GuacamoleParameter {
+		name @0 :Text;
+		value @1 :Text;
+	}
+
 	setting :union {
-		enabled @0 :Bool;
+		autoStart @0 :Bool;
 		name @1 :Text;
 		description @2 :Text;
 		host @3 :Text;
 		operatingSystem @4 :Text;
 		ram @5 :UInt8;
-		disk @6 :UInt8;
+		diskSpace @6 :UInt8;
 		startCommand @7 :Text;
 		stopCommand @8 :Text;
 		restartCommand @9 :Text;
@@ -188,7 +195,7 @@ struct VmSetting {
 		# Allow users to upload files to the VM
 		uploadsEnabled @13 :Bool;
 		# Number of seconds a user must wait in between uploads
-		uploadWaitTime @14 :UInt16 = 180;
+		uploadCooldownTime @14 :UInt16 = 180;
 		# Max number of bytes a user is allowed to upload
 		maxUploadSize @15 :UInt32 = 15728640; # 15 MiB
 		# Allow users to vote for resetting the VM
@@ -200,6 +207,8 @@ struct VmSetting {
 		protocol @19 :Protocol;
 		address @20 :Text;
 		socketType @21 :SocketType;
+		guacamoleParameters @22 :List(GuacamoleParameter);
+		safeForWork @23 :Bool;
 	}
 }
 
@@ -236,6 +245,12 @@ struct CollabVmClientMessage {
 		readInvites @19 :Void;
 		updateInvite @20 :UserInvite;
 		deleteInvite @21 :Data;
+		changePasswordRequest @22 :ChangePasswordRequest;
+	}
+
+  struct ChangePasswordRequest {
+    oldPassword @0 :Text;
+    newPassword @1 :Text;
 	}
 
 	struct UserInvite {
