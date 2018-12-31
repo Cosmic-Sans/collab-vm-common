@@ -1,5 +1,6 @@
 @0xb9e188bf95349e81;
 using import "Guacamole.capnp".GuacServerInstruction;
+using VmId = UInt32;
 
 struct CollabVmServerMessage {
 	struct VmInfo {
@@ -160,9 +161,8 @@ struct VmSetting {
 	}
 
 	enum Protocol {
-		vnc @0;
-		rdp @1;
-		guacamole @2;
+		rdp @0;
+		vnc @1;
 	}
 
 	enum SocketType {
@@ -180,35 +180,34 @@ struct VmSetting {
 		autoStart @0 :Bool;
 		name @1 :Text;
 		description @2 :Text;
-		host @3 :Text;
-		operatingSystem @4 :Text;
-		ram @5 :UInt8;
-		diskSpace @6 :UInt8;
-		startCommand @7 :Text;
-		stopCommand @8 :Text;
-		restartCommand @9 :Text;
-		snapshotCommands @10 :List(VmSnapshot);
+		safeForWork @3 :Bool;
+		host @4 :Text;
+		operatingSystem @5 :Text;
+		ram @6 :UInt8;
+		diskSpace @7 :UInt8;
+		startCommand @8 :Text;
+		stopCommand @9 :Text;
+		restartCommand @10 :Text;
+		snapshotCommands @11 :List(VmSnapshot);
 		# Allow users to take turns controlling the VM
-		turnsEnabled @11 :Bool;
+		turnsEnabled @12 :Bool;
 		# Number of seconds a turn will last
-		turnTime @12 :UInt16 = 20;
+		turnTime @13 :UInt16 = 20;
 		# Allow users to upload files to the VM
-		uploadsEnabled @13 :Bool;
+		uploadsEnabled @14 :Bool;
 		# Number of seconds a user must wait in between uploads
-		uploadCooldownTime @14 :UInt16 = 180;
+		uploadCooldownTime @15 :UInt16 = 180;
 		# Max number of bytes a user is allowed to upload
-		maxUploadSize @15 :UInt32 = 15728640; # 15 MiB
+		maxUploadSize @16 :UInt32 = 15728640; # 15 MiB
 		# Allow users to vote for resetting the VM
-		votesEnabled @16 :Bool;
+		votesEnabled @17 :Bool;
 		# Number of seconds a vote will last
-		voteTime @17 :UInt16 = 60;
+		voteTime @18 :UInt16 = 60;
 		# Number of seconds in between votes
-		voteCooldownTime @18 :UInt16 = 600;
-		protocol @19 :Protocol;
-		address @20 :Text;
-		socketType @21 :SocketType;
+		voteCooldownTime @19 :UInt16 = 600;
+		agentAddress @20 :Text;
+		protocol @21 :Protocol;
 		guacamoleParameters @22 :List(GuacamoleParameter);
-		safeForWork @23 :Bool;
 	}
 }
 
@@ -246,6 +245,8 @@ struct CollabVmClientMessage {
 		updateInvite @20 :UserInvite;
 		deleteInvite @21 :Data;
 		changePasswordRequest @22 :ChangePasswordRequest;
+		startVms @23 :List(VmId);
+		stopVms @24 :List(VmId);
 	}
 
   struct ChangePasswordRequest {
