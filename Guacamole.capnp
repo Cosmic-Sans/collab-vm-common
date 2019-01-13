@@ -69,11 +69,12 @@ struct GuacServerInstruction {
     disconnect @39 :Void;
     error @40 :Error;
     log @41 :Text;
-    mouse @42 :Point;
-    nop @43 :Void;
-    ready @44 :Text;
-    sync @45 :Int64;
-    name @46 :Text;
+    mouse @42 :ServerMouse;
+    key @43 :ServerKey;
+    nop @44 :Void;
+    ready @45 :Text;
+    sync @46 :Int64;
+    name @47 :Text;
   }
 }
 
@@ -101,8 +102,8 @@ struct GuacClientInstruction {
     #end @19 :Stream;
 
     sync @0 :Int64;
-    mouse @1 :Mouse;
-    key @2 :Key;
+    mouse @1 :ClientMouse;
+    key @2 :ClientKey;
     clipboard @3 :Clipboard;
     disconnect @4 :Void;
     size @5 :Size;
@@ -366,14 +367,27 @@ struct Error {
   status @1 :Int32;
 }
 
-struct Key {
+struct ClientKey {
   keysym @0 :Int32;
   pressed @1 :Bool;
 }
 
-struct Mouse {
+struct ClientMouse {
   x @0 :Int32;
   y @1 :Int32;
-  mask @2 :Int32;
+  buttonMask @2 :Int32;
+}
+
+struct ServerMouse {
+  x @0 :Int32;
+  y @1 :Int32;
+  buttonMask @2 :Int32;
+  timestamp @3 :Int64;
+}
+
+struct ServerKey {
+  keysym @0 :Int32;
+  pressed @1 :Bool;
+  timestamp @2 :Int64;
 }
 
