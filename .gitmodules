@@ -1,4 +1,4 @@
 [submodule "submodules/capnproto"]
 	path = submodules/capnproto
-	url = https://github.com/capnproto/capnproto.git
+	url = https://github.com/Cosmic-Sans/capnproto.git
 	branch = master

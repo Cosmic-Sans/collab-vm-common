@@ -7,8 +7,6 @@ using Stream = Int32;
 using Status = Int32;
 using Object = Int32;
 
-using Args = Void;
-using Ready = Void;
 using CompositeMode = UInt8;
 using Connect = Void;
 using Image = Void;
