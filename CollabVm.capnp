@@ -94,6 +94,7 @@ struct CollabVmServerMessage {
   struct ChannelConnectResponse {
     struct ConnectInfo {
       chatMessages @0 :List(ChatMessage);
+      username @1 :Text;
     }
     result :union {
       success @0 :ConnectInfo;
@@ -140,11 +141,6 @@ struct CollabVmServerMessage {
   struct UserListUpdate {
     channel @0 :VmId;
     username @1 :Text;
-  }
-
-  struct IpAddress {
-    first @0 :UInt64;
-    second @1 :UInt64;
   }
 
   struct UserAdmin {
@@ -302,7 +298,10 @@ struct CollabVmClientMessage {
     stopVms @24 :List(VmId);
     restartVms @25 :List(VmId);
     guacInstr @26 :GuacClientInstruction;
-    turnRequest @27 :VmId;
+    turnRequest @27 :Void;
+    banIp @28 :IpAddress;
+    kickUser @29 :KickUserRequest;
+    sendCaptcha @30 :Text;
   }
 
   struct ChangePasswordRequest {
@@ -343,4 +342,14 @@ struct CollabVmClientMessage {
     password @1 :Text;
     twoFactorToken @2 :Data;
   }
+
+  struct KickUserRequest {
+    username @0 :Text;
+    message @1 :Text;
+  }
+}
+
+struct IpAddress {
+  first @0 :UInt64;
+  second @1 :UInt64;
 }
