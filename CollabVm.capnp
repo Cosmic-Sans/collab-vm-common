@@ -124,9 +124,16 @@ struct CollabVmServerMessage {
     #vmHost @5 :Bool;
   }
 
+  enum TurnState {
+    disabled @0;
+    enabled @1;
+    paused @2;
+  }
+
   struct VmTurnInfo {
-    users @0 :List(Text);
-    timeRemaining @1 :UInt32;
+    state @0 :TurnState;
+    users @1 :List(Text);
+    timeRemaining @2 :UInt32;
   }
 
   struct User {
@@ -302,6 +309,9 @@ struct CollabVmClientMessage {
     banIp @28 :IpAddress;
     kickUser @29 :KickUserRequest;
     sendCaptcha @30 :Text;
+    pauseTurnTimer @31 :Void;
+    resumeTurnTimer @32 :Void;
+    endTurn @33 :Void;
   }
 
   struct ChangePasswordRequest {
