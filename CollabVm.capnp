@@ -136,8 +136,15 @@ struct CollabVmServerMessage {
     timeRemaining @2 :UInt32;
   }
 
+  enum UserType {
+    guest @0;
+    regular @1;
+    admin @2;
+  }
+
   struct User {
     username @0 :Text;
+    userType @1 :UserType;
   }
 
   struct UserList {
@@ -148,11 +155,17 @@ struct CollabVmServerMessage {
   struct UserListUpdate {
     channel @0 :VmId;
     username @1 :Text;
+    userType @2 :UserType;
   }
 
+  struct UserListRemove {
+    channel @0 :VmId;
+    username @1 :Text;
+  }
   struct UserAdmin {
     username @0 :Text;
-    ipAddress @1 :IpAddress;
+    userType @1 :UserType;
+    ipAddress @2 :IpAddress;
   }
 
   struct AdminUserListUpdate {
@@ -191,7 +204,7 @@ struct CollabVmServerMessage {
     vmTurnInfo @22 :VmTurnInfo;
     userList @23 :UserList;
     userListAdd @24 :UserListUpdate;
-    userListRemove @25 :UserListUpdate;
+    userListRemove @25 :UserListRemove;
     adminUserList @26 :AdminUserList;
     adminUserListAdd @27 :AdminUserListUpdate;
     vmDescription @28 :Text;
