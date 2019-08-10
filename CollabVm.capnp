@@ -81,8 +81,9 @@ struct CollabVmServerMessage {
       usernameTaken @0;
       usernameInvalid @1;
       passwordInvalid @2;
-      totpError @3;
-      success @4; # Only used by server
+      inviteInvalid @3;
+      totpError @4;
+      success @5; # Only used by server
     }
 
     result :union {
@@ -178,6 +179,11 @@ struct CollabVmServerMessage {
     users @1 :List(UserAdmin);
   }
 
+  struct InviteValidationResponse {
+    isValid @0 :Bool;
+    username @1 :Text;
+  }
+
   message :union {
     vmListResponse @0 :List(VmInfo);
     vmThumbnail @1 :VmThumbnail;
@@ -208,6 +214,7 @@ struct CollabVmServerMessage {
     adminUserList @26 :AdminUserList;
     adminUserListAdd @27 :AdminUserListUpdate;
     vmDescription @28 :Text;
+    inviteValidationResponse @29 :InviteValidationResponse;
   }
 }
 
@@ -325,6 +332,7 @@ struct CollabVmClientMessage {
     pauseTurnTimer @31 :Void;
     resumeTurnTimer @32 :Void;
     endTurn @33 :Void;
+    validateInvite @34 :Data;
   }
 
   struct ChangePasswordRequest {
@@ -336,9 +344,8 @@ struct CollabVmClientMessage {
     id @0 :Data;
     inviteName @1 :Text;
     username @2 :Text;
-    usernameReserved @3 :Bool;
-    admin @4 :Bool;
-    #vmHost @5 :Bool;
+    admin @3 :Bool;
+    #vmHost @4 :Bool;
   }
 
   struct ChatMessage {
@@ -364,6 +371,7 @@ struct CollabVmClientMessage {
     username @0 :Text;
     password @1 :Text;
     twoFactorToken @2 :Data;
+    inviteId @3 :Data;
   }
 
   struct KickUserRequest {
