@@ -221,12 +221,20 @@ struct CollabVmServerMessage {
 struct ServerSetting {
   setting :union {
     allowAccountRegistration @0 :Bool = true;
-    recaptchaEnabled @1 :Bool;
-    recaptchaKey @2 :Text;
-    userVmsEnabled @3 :Bool;
-    allowUserVmRequests @4 :Bool;
-    banIpCommand @5 :Text;
-    unbanIpCommand @6 :Text;
+    captcha @1 :Captcha;
+    userVmsEnabled @2 :Bool;
+    allowUserVmRequests @3 :Bool;
+    banIpCommand @4 :Text;
+    unbanIpCommand @5 :Text;
+  }
+  struct Captcha {
+    enabled @0 :Bool;
+    https @1 : Bool;
+    urlHost @2 :Text;
+    urlPort @3 :UInt16;
+    urlPath @4 :Text;
+    postParams @5 :Text;
+    validJSONVariableName @6 :Text;
   }
 }
 
