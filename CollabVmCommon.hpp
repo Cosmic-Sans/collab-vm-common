@@ -6,6 +6,8 @@ namespace CollabVm::Shared {
 
 constexpr static auto min_username_len = 3;
 constexpr static auto max_username_len = 20;
+constexpr static auto max_chat_message_len = 100;
+constexpr static auto vote_limit = 5;
 
 bool ValidateUsername(const std::string_view username) {
   if (username.length() < min_username_len ||

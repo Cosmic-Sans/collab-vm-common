@@ -2,6 +2,7 @@
 using import "Guacamole.capnp".GuacServerInstruction;
 using import "Guacamole.capnp".GuacClientInstruction;
 using VmId = UInt32;
+using InviteId = Data;
 
 struct CollabVmServerMessage {
   struct VmInfo {
@@ -78,12 +79,13 @@ struct CollabVmServerMessage {
 
   struct RegisterAccountResponse {
     enum RegisterAccountError {
-      usernameTaken @0;
-      usernameInvalid @1;
-      passwordInvalid @2;
-      inviteInvalid @3;
-      totpError @4;
-      success @5; # Only used by server
+      invalidCaptchaToken @0;
+      usernameTaken @1;
+      usernameInvalid @2;
+      passwordInvalid @3;
+      inviteInvalid @4;
+      totpError @5;
+      success @6; # Only used by server
     }
 
     result :union {
@@ -96,6 +98,7 @@ struct CollabVmServerMessage {
     struct ConnectInfo {
       chatMessages @0 :List(ChatMessage);
       username @1 :Text;
+      captchaRequired @2 :Bool;
     }
     result :union {
       success @0 :ConnectInfo;
@@ -118,7 +121,7 @@ struct CollabVmServerMessage {
   }
 
   struct UserInvite {
-    id @0 :Data;
+    id @0 :InviteId;
     inviteName @1 :Text;
     username @2 :Text;
     admin @3 :Bool;
@@ -198,7 +201,7 @@ struct CollabVmServerMessage {
     chatMessageResponse @10 :ChatMessageResponse;
     newChatChannel @11 :ChannelChatMessage;
     reserveUsernameResult @12 :Bool;
-    createInviteResult @13 :Data;
+    createInviteResult @13 :InviteId;
     readInvitesResponse @14 :List(UserInvite);
     updateInviteResult @15 :Bool;
     readReservedUsernamesResponse @16 :List(Text);
@@ -215,6 +218,21 @@ struct CollabVmServerMessage {
     adminUserListAdd @27 :AdminUserListUpdate;
     vmDescription @28 :Text;
     inviteValidationResponse @29 :InviteValidationResponse;
+    captchaRequired @30 :Bool;
+    voteStatus @31 :VoteStatus;
+    voteResult @32 :Bool;
+  }
+}
+
+struct VoteStatus {
+  status :union {
+    disabled @0 :Void;
+    enabled @1 :VoteInfo;
+  }
+  struct VoteInfo {
+    timeRemaining @0 :UInt32;
+    yesVoteCount @1 :UInt32;
+    noVoteCount @2 :UInt32;
   }
 }
 
@@ -222,10 +240,11 @@ struct ServerSetting {
   setting :union {
     allowAccountRegistration @0 :Bool = true;
     captcha @1 :Captcha;
-    userVmsEnabled @2 :Bool;
-    allowUserVmRequests @3 :Bool;
-    banIpCommand @4 :Text;
-    unbanIpCommand @5 :Text;
+    captchaRequired @2 :Bool;
+    userVmsEnabled @3 :Bool;
+    allowUserVmRequests @4 :Bool;
+    banIpCommand @5 :Text;
+    unbanIpCommand @6 :Text;
   }
   struct Captcha {
     enabled @0 :Bool;
@@ -327,7 +346,7 @@ struct CollabVmClientMessage {
     createInvite @18 :UserInvite;
     readInvites @19 :Void;
     updateInvite @20 :UserInvite;
-    deleteInvite @21 :Data;
+    deleteInvite @21 :InviteId;
     changePasswordRequest @22 :ChangePasswordRequest;
     startVms @23 :List(VmId);
     stopVms @24 :List(VmId);
@@ -336,11 +355,13 @@ struct CollabVmClientMessage {
     turnRequest @27 :Void;
     banIp @28 :IpAddress;
     kickUser @29 :KickUserRequest;
-    sendCaptcha @30 :Text;
+    sendCaptcha @30 :SendCaptchaRequest;
     pauseTurnTimer @31 :Void;
     resumeTurnTimer @32 :Void;
     endTurn @33 :Void;
-    validateInvite @34 :Data;
+    validateInvite @34 :InviteId;
+    captchaCompleted @35 :Text;
+    vote @36 :Bool;
   }
 
   struct ChangePasswordRequest {
@@ -349,7 +370,7 @@ struct CollabVmClientMessage {
   }
 
   struct UserInvite {
-    id @0 :Data;
+    id @0 :InviteId;
     inviteName @1 :Text;
     username @2 :Text;
     admin @3 :Bool;
@@ -379,12 +400,19 @@ struct CollabVmClientMessage {
     username @0 :Text;
     password @1 :Text;
     twoFactorToken @2 :Data;
-    inviteId @3 :Data;
+    inviteId @3 :InviteId;
+    captchaToken @4 :Text;
   }
 
   struct KickUserRequest {
     username @0 :Text;
-    message @1 :Text;
+    channel @1 :VmId;
+    message @2 :Text;
+  }
+
+  struct SendCaptchaRequest {
+    username @0 :Text;
+    channel @1 :VmId;
   }
 }
 
