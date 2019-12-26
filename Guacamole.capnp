@@ -113,6 +113,7 @@ struct GuacClientInstruction {
     get @11 :Get;
     put @12 :Put;
     audio @13 :Audio;
+    nop @14 :Void;
   }
 }
 
