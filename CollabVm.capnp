@@ -59,6 +59,7 @@ struct CollabVmServerMessage {
   struct Session {
     sessionId @0 :Data;
     username @1 :Text;
+    isAdmin @2 :Bool;
   }
 
   struct LoginResponse {
