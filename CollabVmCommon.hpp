@@ -2,7 +2,7 @@
 #include <cctype>
 #include <string_view>
 
-namespace CollabVm::Shared {
+namespace CollabVm::Common {
 
 constexpr static auto min_username_len = 3;
 constexpr static auto max_username_len = 20;
