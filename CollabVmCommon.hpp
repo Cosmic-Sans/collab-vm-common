@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cctype>
+#include <chrono>
 #include <string_view>
 
 namespace CollabVm::Common {
@@ -7,6 +8,7 @@ namespace CollabVm::Common {
 constexpr static auto min_username_len = 3;
 constexpr static auto max_username_len = 20;
 constexpr static auto max_chat_message_len = 100;
+constexpr static auto chat_rate_limit = std::chrono::seconds(2);
 constexpr static auto vote_limit = 5;
 
 bool ValidateUsername(const std::string_view username) {
