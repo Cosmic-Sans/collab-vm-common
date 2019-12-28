@@ -228,7 +228,9 @@ struct CollabVmServerMessage {
 struct VoteStatus {
   status :union {
     disabled @0 :Void;
-    enabled @1 :VoteInfo;
+    idle @1 :Void;
+    coolingDown @2 :Void;
+    inProgress @3 :VoteInfo;
   }
   struct VoteInfo {
     timeRemaining @0 :UInt32;
