@@ -312,6 +312,7 @@ struct VmSetting {
     agentAddress @20 :Text;
     protocol @21 :Protocol;
     guacamoleParameters @22 :List(GuacamoleParameter);
+    disallowGuests @23 :Bool;
   }
 }
 
