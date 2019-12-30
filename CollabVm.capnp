@@ -14,7 +14,7 @@ struct CollabVmServerMessage {
     uploads @5 :Bool;
     input @6 :Bool;
     ram @7 :UInt8;
-    diskSpace @8 :UInt8;
+    diskSpace @8 :UInt16;
     safeForWork @9 :Bool;
     viewerCount @10 :UInt16;
   }
