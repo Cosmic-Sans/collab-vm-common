@@ -248,6 +248,8 @@ struct ServerSetting {
     allowUserVmRequests @4 :Bool;
     banIpCommand @5 :Text;
     unbanIpCommand @6 :Text;
+    maxConnectionsEnabled @7 :Bool;
+    maxConnections @8 :UInt8;
   }
   struct Captcha {
     enabled @0 :Bool;
