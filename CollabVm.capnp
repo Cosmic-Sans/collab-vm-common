@@ -53,7 +53,8 @@ struct CollabVmServerMessage {
   struct ChatMessage {
     sender @0 :Text;
     message @1 :Text;
-    timestamp @2 :UInt64;
+    userType @2 :UserType;
+    timestamp @3 :UInt64;
   }
 
   struct Session {
