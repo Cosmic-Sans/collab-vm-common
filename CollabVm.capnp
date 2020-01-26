@@ -223,6 +223,14 @@ struct CollabVmServerMessage {
     captchaRequired @30 :Bool;
     voteStatus @31 :VoteStatus;
     voteResult @32 :Bool;
+    recordingTimestamp @33 :UInt64;
+    recordingPlaybackPreview @34 :RecordingPlaybackPreview;
+    recordingPlaybackResult @35 :Bool;
+  }
+
+  struct RecordingPlaybackPreview {
+    timestamp @0 :UInt64;
+    vmThumbnail @1 :VmThumbnail;
   }
 }
 
@@ -251,6 +259,7 @@ struct ServerSetting {
     unbanIpCommand @6 :Text;
     maxConnectionsEnabled @7 :Bool;
     maxConnections @8 :UInt8;
+    recordings @9 :Recordings;
   }
   struct Captcha {
     enabled @0 :Bool;
@@ -260,6 +269,13 @@ struct ServerSetting {
     urlPath @4 :Text;
     postParams @5 :Text;
     validJSONVariableName @6 :Text;
+  }
+  struct Recordings {
+    keyframeInterval @0 :UInt32 = 60; # seconds
+    fileDuration @1 :UInt32 = 600; # 10 minutes
+    captureDisplay @2 :Bool = true;
+    captureAudio @3 :Bool = false;
+    captureInput @4 :Bool = true;
   }
 }
 
@@ -318,6 +334,7 @@ struct VmSetting {
     protocol @21 :Protocol;
     guacamoleParameters @22 :List(GuacamoleParameter);
     disallowGuests @23 :Bool;
+    recordingsEnabled @24 :Bool;
   }
 }
 
@@ -369,6 +386,23 @@ struct CollabVmClientMessage {
     validateInvite @34 :InviteId;
     captchaCompleted @35 :Text;
     vote @36 :Bool;
+    recordingPreviewRequest @37 :RecordingPreviewRequest;
+    recordingPlaybackStart @38 :RecordingPlaybackStart;
+    recordingPlaybackStop @39 :Void;
+  }
+
+  struct RecordingPreviewRequest {
+    vmId @0 :VmId;
+    startTime @1 :UInt64;
+    stopTime @2 :UInt64;
+    timeInterval @3 :UInt32; # zero means keyframe interval
+    width @4 :Int32;  # zero means original
+    height @5 :Int32; # zero means original
+  }
+
+  struct RecordingPlaybackStart {
+    vmId @0 :VmId;
+    startTime @1 :UInt64;
   }
 
   struct ChangePasswordRequest {
@@ -426,4 +460,17 @@ struct CollabVmClientMessage {
 struct IpAddress {
   first @0 :UInt64;
   second @1 :UInt64;
+}
+
+struct RecordingFileHeader {
+  vmId @0 :VmId;
+  startTime @1 :UInt64;
+  stopTime @2 :UInt64;
+  keyframesCount @3 :UInt32;
+  keyframes @4 :List(Keyframe);
+
+  struct Keyframe {
+    timestamp @0 :UInt64;
+    fileOffset @1 :UInt64;
+  }
 }
