@@ -2,6 +2,7 @@
 #include <cctype>
 #include <chrono>
 #include <string_view>
+#include "Guacamole.capnp.h"
 
 namespace CollabVm::Common {
 
@@ -43,6 +44,17 @@ bool ValidateUsername(const std::string_view username) {
   // "^(?:[a-zA-Z0-9]|[_\-\.!\?](?!_|-|\.| |!|\?))"
   // "(?:[a-zA-Z0-9]|[_\-\.!\? ](?!_|-|\.| |!|\?)){1,18}"
   // "[a-zA-Z0-9_\-\.!\?]$"
+}
+
+bool IsGuacamoleClientInstructionAllowed(Guacamole::GuacClientInstruction::Which opcode) {
+  switch (opcode) {
+    case Guacamole::GuacClientInstruction::Which::MOUSE:
+    case Guacamole::GuacClientInstruction::Which::KEY:
+      return true;
+    default:
+      break;
+  }
+  return false;
 }
 
 }
