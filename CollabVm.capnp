@@ -335,6 +335,7 @@ struct VmSetting {
     guacamoleParameters @22 :List(GuacamoleParameter);
     disallowGuests @23 :Bool;
     recordingsEnabled @24 :Bool;
+    runStartCommandAfterDisconnect @25 :Bool;
   }
 }
 
