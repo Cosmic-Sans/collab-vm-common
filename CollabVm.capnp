@@ -271,8 +271,8 @@ struct ServerSetting {
     validJSONVariableName @6 :Text;
   }
   struct Recordings {
-    keyframeInterval @0 :UInt32 = 60; # seconds
-    fileDuration @1 :UInt32 = 600; # 10 minutes
+    keyframeInterval @0 :UInt32 = 0; # seconds
+    fileDuration @1 :UInt32 = 60; # 60 minutes
     captureDisplay @2 :Bool = true;
     captureAudio @3 :Bool = false;
     captureInput @4 :Bool = true;
