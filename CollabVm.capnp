@@ -237,7 +237,7 @@ struct CollabVmServerMessage {
 struct VoteStatus {
   status :union {
     disabled @0 :Void;
-    idle @1 :Void;
+    idle @1 :VoterEligibility;
     coolingDown @2 :Void;
     inProgress @3 :VoteInfo;
   }
@@ -245,6 +245,10 @@ struct VoteStatus {
     timeRemaining @0 :UInt32;
     yesVoteCount @1 :UInt32;
     noVoteCount @2 :UInt32;
+    voterEligibility @3 :VoterEligibility;
+  }
+  struct VoterEligibility {
+    disallowGuestVotes @0 :Bool;
   }
 }
 
@@ -336,6 +340,7 @@ struct VmSetting {
     disallowGuests @23 :Bool;
     recordingsEnabled @24 :Bool;
     runStartCommandAfterDisconnect @25 :Bool;
+    disallowGuestVotes @26 :Bool;
   }
 }
 
