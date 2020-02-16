@@ -395,6 +395,7 @@ struct CollabVmClientMessage {
     recordingPreviewRequest @37 :RecordingPreviewRequest;
     recordingPlaybackStart @38 :RecordingPlaybackStart;
     recordingPlaybackStop @39 :Void;
+    cancelVote @40 :Void;
   }
 
   struct RecordingPreviewRequest {
